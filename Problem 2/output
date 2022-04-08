@@ -1,0 +1,17 @@
+Process A starting
+
+Process C starting
+
+Process B starting
+
+Process D starting
+
+Process D returns 10
+
+Process B returning 4
+
+Process C returns 6
+
+Process A returning 2
+
+...Program finished with exit code 0
