@@ -1,0 +1,37 @@
+Hi I'm process 35043 and my parent is 35023. 
+Hi I'm process 35024 and my parent is 35015. 
+Hi I'm process 35025 and my parent is 35015. 
+Hi I'm process 35026 and my parent is 35015. 
+Hi I'm process 35015 and my parent is 34875. 
+Hi I'm process 35027 and my parent is 35018. 
+Hi I'm process 35028 and my parent is 35018. 
+Hi I'm process 35029 and my parent is 35018. 
+Hi I'm process 35018 and my parent is 35016. 
+Hi I'm process 35030 and my parent is 35019. 
+Hi I'm process 35031 and my parent is 35019. 
+Hi I'm process 35032 and my parent is 35019. 
+Hi I'm process 35019 and my parent is 35016. 
+Hi I'm process 35034 and my parent is 35020. 
+Hi I'm process 35035 and my parent is 35020. 
+Hi I'm process 35036 and my parent is 35021. 
+Hi I'm process 35037 and my parent is 35021. 
+Hi I'm process 35038 and my parent is 35021. 
+Hi I'm process 35021 and my parent is 35017. 
+Hi I'm process 35039 and my parent is 35022. 
+Hi I'm process 35040 and my parent is 35022. 
+Hi I'm process 35033 and my parent is 35020. 
+Hi I'm process 35020 and my parent is 35016. 
+Hi I'm process 35016 and my parent is 34875. 
+Hi I'm process 35016 and I found the hidden key in position A[360]. 
+Hi I'm process 35016 and I found the hidden key in position A[449]. 
+Hi I'm process 35016 and I found the hidden key in position A[455]. 
+Hi I'm process 35042 and my parent is 35023. 
+Hi I'm process 35023 and my parent is 35017. 
+Hi I'm process 35041 and my parent is 35022. 
+Hi I'm process 35022 and my parent is 35017. 
+Hi I'm process 35017 and my parent is 34875. 
+Hi I'm process 34875 and my parent is 6204. 
+Hi I'm process 34875 and I found the hidden key in position A[15]. 
+Hi I'm process 34875 and I found the hidden key in position A[299]. 
+Max = 99, Avg = 49 
+

@@ -1,0 +1,8 @@
+Hi I'm process 34820 and my parent is 34819. 
+Hi I'm process 34792 and I found the hidden key in position A[360]. 
+Hi I'm process 34792 and I found the hidden key in position A[449]. 
+Hi I'm process 34792 and I found the hidden key in position A[455]. 
+Hi I'm process 34760 and I found the hidden key in position A[15]. 
+Hi I'm process 34760 and I found the hidden key in position A[299]. 
+Max = 99, Avg = 49 
+

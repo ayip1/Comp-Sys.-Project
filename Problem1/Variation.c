@@ -1,5 +1,5 @@
 // Code by Zachary Waynor
-// Project 1 Problem 3
+// Project 1 Variaition
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -15,20 +15,15 @@ int main()
     FILE *fptr;
     fptr = fopen("Secret_Code.txt", "r");
 
-    printf("Enter number of Integers L For CodeFile:");
+    printf("Enter number of Integers For CodeFile:");
     int IntCountL = 5000;
     scanf("%d", &IntCountL);
-
-    
-
-   
     int num[IntCountL];
     int hiddenKeys[IntCountL];
-    int hiddenKeyCount = 0;
+    
     int max = 0;
     // int min = INFINITY;
-    int sum = 0;
-    int avg = 0;
+    
     pid_t pid;
 
     if (fptr == NULL)
@@ -41,27 +36,29 @@ int main()
     {
         fscanf(fptr, "%d", &num[i]);
     }
-     fclose(fptr);
+    fclose(fptr);
     FILE *fptr2;
-   fptr2 = fopen("Output3.txt","w+");
+   fptr2 = fopen("OutputVariation.txt","w+");
 
-    // Shared Memory for sum and max
-    int shmid = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0600);
+    int hiddenKeyMax = 4;
+
+
+    
+    int shmid = shmget(IPC_PRIVATE, 4*sizeof(int), IPC_CREAT | 0600);
+   
+    int *hiddenKeyIndex = shmat(shmid, NULL, 0);   // sum
+    
     int shmid2 = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0600);
-    void *mem = shmat(shmid, NULL, 0);   // sum
-    void *mem2 = shmat(shmid2, NULL, 0); // max
-    // Shared Memory for Global Start
+    void *hiddenKeyCount = shmat(shmid2, NULL, 0); // max
 
 
-    int X = 3;
-    int Np = 30;
-
-     printf("Enter number of Children X For CodeFile:");
+    int X = 5;
+    int Np = 20;
+    printf("Enter number of Children X For CodeFile:");
     scanf("%d", &X);
 
     printf("Enter number of Processces NP For CodeFile:");
     scanf("%d", &Np);
-
 
     int APStart = 0;
     int APEnd = IntCountL / Np;
@@ -74,6 +71,12 @@ int main()
     void *ProcessCount = shmat(shmid3, NULL, 0); // sum
     *(int *)ProcessCount = 1;
     int ProcessNumber = 1;
+
+    for (int i = 0; i < hiddenKeyMax; i++){
+            hiddenKeyIndex[i] = INFINITY;
+    }
+
+
 
     do
     {
@@ -103,18 +106,44 @@ int main()
         }
     } while (pid == 0 && *(int *)ProcessCount < Np);
 
-    fprintf(fptr2,"Hi I\'m process %d and my parent is %d. \n", getpid(), getppid());
+    printf("Hi I\'m process %d and my parent is %d. \n", getpid(), getppid());
 
     for (int i = APStart; i < APEnd; i++)
     {
-        if (num[i] > max)
-            max = num[i];
-        sum = sum + num[i];
+        if(*(int *)hiddenKeyCount > hiddenKeyMax && i > hiddenKeyIndex[hiddenKeyMax-1]){
+            i = APEnd;
+        }
+       
         if (num[i] < 0)
         {
-            hiddenKeys[hiddenKeyCount] = i;
-            hiddenKeyCount++;
-            fprintf(fptr2,"Hi I\'m process %d and I found the hidden key in position A[%d]. \n", getpid(), i);
+            //hiddenKeys[hiddenKeyCount] = i;
+            int hiddenKeyLoc = i;
+            //printf("X\n");
+            
+
+            if(*(int *)hiddenKeyCount < hiddenKeyMax){
+                *(int *)hiddenKeyCount = *(int *)hiddenKeyCount +1;
+            
+            }
+            
+
+            for (int j = 0; j < hiddenKeyMax; j++){
+                if (hiddenKeyLoc > hiddenKeyIndex[hiddenKeyMax-1-j]){
+                    j=hiddenKeyMax; 
+                }
+                else{
+                    int temp = hiddenKeyIndex[hiddenKeyMax-1-j];
+                    hiddenKeyIndex[hiddenKeyMax-1-j] = hiddenKeyLoc;
+                    if (hiddenKeyMax-j < hiddenKeyMax){
+                        hiddenKeyIndex[hiddenKeyMax-j] = temp;
+                    }
+                }
+                //printf("%d\n",j);
+            }
+            
+            
+
+            //printf("Hi I\'m process %d and I found the hidden key in position A[%d]. \n", getpid(), i);
         }
     }
 
@@ -124,35 +153,25 @@ int main()
         wait(&status);
     }
 
-    int sumChild = 0;
-    int maxChild = 0;
+    
 
-    sumChild = *(int *)mem;
-    maxChild = *(int *)mem2;
-    sum = sum + sumChild;
-    if (maxChild > max)
-        max = maxChild;
-    if (APStart > 0)
-    {
-        *(int *)mem = sum;
-        *(int *)mem2 = max;
-    }
-    else
-    {
-        avg = sum / IntCountL;
-        fprintf(fptr2,"Max = %d, Avg = %d \n\n", max, avg);
-        //fprintf(fptr2,"Sum = %d\n",sum);
-    }
+    if (APStart  == 0){
 
-    shmdt(mem);
-    shmdt(mem2);
+        for (int i = 0; i < hiddenKeyMax; i++){
+            fprintf(fptr2,"Hi I\'m process %d and I found the hidden key in position A[%d]. \n", getpid(), hiddenKeyIndex[i]);
+        }
+
+    }
+   
+    shmdt(hiddenKeyIndex);
+    shmdt(hiddenKeyCount);
     shmdt(ProcessCount);
 
     fclose(fptr2);
     // printf("TERMINATED\n");
     if (APStart  == 0)
     {
-
+       
         shmctl(shmid, IPC_RMID, NULL);
         shmctl(shmid2, IPC_RMID, NULL);
         shmctl(shmid3, IPC_RMID, NULL);

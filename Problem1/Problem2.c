@@ -15,12 +15,19 @@ int main()
   FILE *fptr;
   fptr = fopen("Secret_Code.txt","r");
  
-   int numberOfProcesses = 4;
+   
    int currentCreatedProcesses= 1;
 
    int numberOfChildrenX = 3;
 
-   int IntCountL = 50;
+      printf("Enter number of Integers L For CodeFile:");
+    int IntCountL = 5000;
+    scanf("%d", &IntCountL);
+
+    printf("Enter number of Processces NP For CodeFile:");
+    int numberOfProcesses = 12;
+    scanf("%d", &numberOfProcesses);
+
    int num[IntCountL];
    int hiddenKeys[IntCountL];
    int hiddenKeyCount = 0;
@@ -40,7 +47,9 @@ int main()
    for (int i=0;i<IntCountL; i++){
        fscanf(fptr,"%d", &num[i]);
    }
-
+    fclose(fptr);
+    FILE *fptr2;
+   fptr2 = fopen("Output2.txt","w+");
    
    int StartPoint = 0;
   
@@ -75,7 +84,7 @@ int main()
            }
             else{
                EndPoint = IntCountL;
-               printf("Hi I\'m process %d and my parent is %d. \n", getpid(),getppid());
+               fprintf(fptr2,"Hi I\'m process %d and my parent is %d. \n", getpid(),getppid());
  
                for (int i=StartPoint ;i<EndPoint; i++){
                    if (num[i] > max) max = num[i];
@@ -83,7 +92,7 @@ int main()
                    if (num[i] < 0){
                        hiddenKeys[hiddenKeyCount] = i ;
                        hiddenKeyCount++;
-                       printf("Hi I\'m process %d and I found the hidden key in position A[%d]. \n", getpid(), i);
+                       fprintf(fptr2,"Hi I\'m process %d and I found the hidden key in position A[%d]. \n", getpid(), i);
                    }
                   
                }
@@ -103,7 +112,7 @@ int main()
                if (num[i] < 0){
                    hiddenKeys[hiddenKeyCount] = i ;
                    hiddenKeyCount++;
-                   printf("Hi I\'m process %d and I found the hidden key in position A[%d]. \n", getpid(), i);
+                   fprintf(fptr2,"Hi I\'m process %d and I found the hidden key in position A[%d]. \n", getpid(), i);
                }
  
            }
@@ -129,7 +138,7 @@ int main()
             }
            else{
                 avg = sum/IntCountL;
-                printf("Max = %d, Avg = %d \n\n",max, avg);
+                fprintf(fptr2,"Max = %d, Avg = %d \n\n",max, avg);
            }
            
            
@@ -154,7 +163,7 @@ int main()
   
    shmdt(mem);
    shmdt(mem2);
-   fclose(fptr);
+   fclose(fptr2);
    //printf("TERMINATED\n");
     if( StartPoint == 0){
         shmctl(shmid, IPC_RMID, NULL);

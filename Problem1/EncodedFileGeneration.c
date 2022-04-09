@@ -12,7 +12,9 @@ int main()
 
    FILE *fptr;
    fptr = fopen("Secret_Code.txt","w");
-    int IntCountL = 50;
+   printf("Enter number of Integers For CodeFile:");
+    int IntCountL = 5000;
+    scanf("%d", &IntCountL);
    if(fptr == NULL)
    {
       printf("Error!");   
